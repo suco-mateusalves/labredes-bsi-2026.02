@@ -44,19 +44,19 @@ A máquina virtual foi criada com as seguintes configurações observadas durant
 
 ### Evidência — Nome, sistema operacional e ISO
 
-![Configuração inicial da máquina virtual](./Aula01/Evidências/01.01-configuracao-vm.png)
+![Configuração inicial da máquina virtual](./Evidências/01.01-configuracao-vm.png)
 
 ### Evidência — Memória e processador
 
-![Configuração de memória e CPU](./Aula01/Evidências/01.02-configuracao-vm.png)
+![Configuração de memória e CPU](./Evidências/01.02-configuracao-vm.png)
 
 ### Evidência — Disco virtual
 
-![Configuração do disco virtual](./Aula01/Evidências/01.03-configuracao-vm.png)
+![Configuração do disco virtual](./Evidências/01.03-configuracao-vm.png)
 
 ### Evidência — Máquina virtual criada
 
-![Máquina virtual no VirtualBox](./Aula01/Evidências/02-maquina-virtual.png)
+![Máquina virtual no VirtualBox](./Evidências/02-maquina-virtual.png)
 
 ---
 
@@ -72,11 +72,11 @@ A imagem ISO do Ubuntu Server 26.04 foi selecionada como mídia de instalação.
 
 As três telas abaixo registram as principais configurações realizadas durante a criação da VM.
 
-![Nome, sistema operacional e ISO](./Aula01/Evidências/01.01-configuracao-vm.png)
+![Nome, sistema operacional e ISO](./Evidências/01.01-configuracao-vm.png)
 
-![Memória e processador](./Aula01/Evidências/01.02-configuracao-vm.png)
+![Memória e processador](./Evidências/01.02-configuracao-vm.png)
 
-![Disco virtual](./Aula01/Evidências/01.03-configuracao-vm.png)
+![Disco virtual](./Evidências/01.03-configuracao-vm.png)
 
 ---
 
@@ -86,7 +86,7 @@ Após a criação da máquina virtual, a VM foi inicializada utilizando a imagem
 
 A primeira tela apresentada foi o menu de inicialização do instalador, com a opção **Try or Install Ubuntu Server**.
 
-![Inicialização do Ubuntu Server](./Aula01/Evidências/03.01-instalacao-ubuntu.png)
+![Inicialização do Ubuntu Server](./Evidências/03.01-instalacao-ubuntu.png)
 
 ---
 
@@ -94,7 +94,7 @@ A primeira tela apresentada foi o menu de inicialização do instalador, com a o
 
 No instalador, foi selecionado o idioma **English** para a interface do processo de instalação.
 
-![Seleção do idioma](./Aula01/Evidências/03.02-instalacao-ubuntu.png)
+![Seleção do idioma](./Evidências/03.02-instalacao-ubuntu.png)
 
 ---
 
@@ -104,7 +104,7 @@ Em seguida, foi realizada a configuração do teclado.
 
 Foi utilizado o layout **Portuguese (Brazil)**, conforme registrado na tela do instalador.
 
-![Configuração do teclado](./Aula01/Evidências/03.03-instalacao-ubuntu.png)
+![Configuração do teclado](./Evidências/03.03-instalacao-ubuntu.png)
 
 ---
 
@@ -114,7 +114,7 @@ Na etapa de escolha do tipo de instalação, foi selecionada a opção **Ubuntu 
 
 Também foi apresentada a possibilidade de utilização da versão minimizada e da instalação de drivers de terceiros.
 
-![Tipo de instalação](./Aula01/Evidências/03.04-instalacao-ubuntu.png)
+![Tipo de instalação](./Evidências/03.04-instalacao-ubuntu.png)
 
 ---
 
@@ -124,7 +124,7 @@ O instalador identificou a interface de rede `enp0s3`.
 
 A interface recebeu configuração automática por DHCP, permitindo que o servidor obtivesse conectividade de rede durante o processo de instalação.
 
-![Configuração da rede](./Aula01/Evidências/03.05-instalacao-ubuntu.png)
+![Configuração da rede](./Evidências/03.05-instalacao-ubuntu.png)
 
 ---
 
@@ -138,7 +138,7 @@ http://br.archive.ubuntu.com/ubuntu
 
 O instalador realizou os testes de acesso ao mirror e iniciou a leitura das listas de pacotes.
 
-![Configuração do mirror do Ubuntu](./Aula01/Evidências/03.06-instalacao-ubuntu.png)
+![Configuração do mirror do Ubuntu](./Evidências/03.06-instalacao-ubuntu.png)
 
 ---
 
@@ -148,7 +148,7 @@ O instalador realizou os testes de acesso ao mirror e iniciou a leitura das list
 
 Para atender à proposta da atividade, foi utilizado o **Custom storage layout**, permitindo realizar manualmente a configuração das partições e volumes.
 
-![Seleção do layout personalizado](./Aula01/Evidências/04.01-particionamento.png)
+![Seleção do layout personalizado](./Evidências/04.01-particionamento.png)
 
 ---
 
@@ -158,7 +158,7 @@ O disco virtual disponível foi identificado pelo instalador com aproximadamente
 
 Nesse momento ainda não havia partições ou volumes configurados.
 
-![Seleção do disco](./Aula01/Evidências/04.02-particionamento.png)
+![Seleção do disco](./Evidências/04.02-particionamento.png)
 
 ---
 
@@ -170,7 +170,7 @@ Foi criada uma partição de **1024 MB (1 GB)**, formatada em `ext4` e configura
 /boot
 ```
 
-![Criação da partição boot](./Aula01/Evidências/04.03-particionamento.png)
+![Criação da partição boot](./Evidências/04.03-particionamento.png)
 
 ---
 
@@ -199,7 +199,7 @@ swap-lv
 
 O volume `ubuntu-lv` foi destinado ao sistema de arquivos raiz `/`, enquanto `swap-lv` foi destinado à área de swap.
 
-![Estrutura final do armazenamento](./Aula01/Evidências/04.04-particionamento.png)
+![Estrutura final do armazenamento](./Evidências/04.04-particionamento.png)
 
 ---
 
@@ -215,7 +215,7 @@ Foram definidos:
 
 A senha foi definida durante a instalação e não é reproduzida neste relatório por questões de segurança.
 
-![Configuração do usuário administrador](./Aula01/Evidências/05-usuario-administrador.png)
+![Configuração do usuário administrador](./Evidências/05-usuario-administrador.png)
 
 ---
 
@@ -227,7 +227,7 @@ A instalação desse serviço prepara o Ubuntu Server para permitir acesso remot
 
 Também foi mantida habilitada a autenticação por senha apresentada pelo instalador.
 
-![Configuração do OpenSSH Server](./Aula01/Evidências/06-openssh.png)
+![Configuração do OpenSSH Server](./Evidências/06-openssh.png)
 
 ---
 
@@ -249,7 +249,7 @@ O comando atualiza as informações sobre os pacotes disponíveis nos repositór
 
 A saída apresentada demonstra que o sistema conseguiu consultar os repositórios e atualizar as informações de pacotes.
 
-![Execução do sudo apt-get update](./Aula01/Evidências/07-apt-update.png)
+![Execução do sudo apt-get update](./Evidências/07-apt-update.png)
 
 ---
 
@@ -265,7 +265,7 @@ O comando permitiu visualizar as interfaces de rede disponíveis e os endereços
 
 Entre as informações apresentadas está a interface `enp0s3`, utilizada durante a instalação.
 
-![Resultado do comando ip addr](./Aula01/Evidências/08-ip-addr.png)
+![Resultado do comando ip addr](./Evidências/08-ip-addr.png)
 
 ---
 
@@ -279,7 +279,7 @@ df -h
 
 O resultado permitiu visualizar os sistemas de arquivos montados e suas respectivas capacidades e utilização.
 
-![Resultado do comando df -h](./Aula01/Evidências/09-df-h.png)
+![Resultado do comando df -h](./Evidências/09-df-h.png)
 
 ---
 
@@ -301,7 +301,7 @@ Os arquivos foram nomeados de acordo com a etapa correspondente, facilitando a i
 
 A máquina virtual utilizada na atividade foi configurada com **2048 MB de memória RAM**, conforme apresentado na evidência de configuração da VM.
 
-![Configuração de memória da VM](./Aula01/Evidências/01.02-configuracao-vm.png)
+![Configuração de memória da VM](./Evidências/01.02-configuracao-vm.png)
 
 > Caso tenha ocorrido algum problema específico durante a instalação, ele pode ser descrito nesta seção juntamente com a causa e a solução utilizada.
 
