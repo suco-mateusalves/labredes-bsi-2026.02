@@ -49,7 +49,7 @@ sudo adduser novato
 
 Após a criação, as contas foram verificadas no sistema para confirmar que estavam disponíveis para as etapas seguintes.
 
-![Criação e verificação dos usuários](./Aula02/Evidências/01-criacao-usuarios.png)
+![Criação e verificação dos usuários](./Evidências/01-criacao-usuarios.png)
 
 ---
 
@@ -77,7 +77,7 @@ grep "devs" /etc/group
 
 A saída confirmou os três usuários como membros do grupo `devs`. O usuário `novato` foi mantido fora do grupo para ser utilizado posteriormente nos testes de bloqueio.
 
-![Criação do grupo devs e associação dos usuários](./Aula02/Evidências/02%20%26%2003%20-criacao-grupo-devs.png)
+![Criação do grupo devs e associação dos usuários](./Evidências/02%20%26%2003%20-criacao-grupo-devs.png)
 
 ---
 
@@ -150,7 +150,7 @@ ls -l /srv/projeto/config_redes.txt
 
 O resultado `-rw-rw----` confirmou que o arquivo estava configurado conforme o objetivo da atividade.
 
-![Criação do diretório, configuração de proprietário, grupo, permissões e arquivo compartilhado](./Aula02/Evidências/04%20%26%2005%20%26%2006%20%26%2007%20-diretorio-projeto-proprietario-grupo-permissao-770-arquivo-config-redes.png)
+![Criação do diretório, configuração de proprietário, grupo, permissões e arquivo compartilhado](./Evidências/04%20%26%2005%20%26%2006%20%26%2007%20-diretorio-projeto-proprietario-grupo-permissao-770-arquivo-config-redes.png)
 
 ---
 
@@ -190,7 +190,7 @@ cat config_redes.txt
 
 A presença das duas linhas no arquivo confirmou que `fulano`, como membro do grupo `devs`, possuía tanto permissão de leitura quanto de escrita.
 
-![Acesso e escrita realizados pelo usuário fulano](./Aula02/Evidências/08%20%26%2009-fulano-acesso-fulano-escrita.png)
+![Acesso e escrita realizados pelo usuário fulano](./Evidências/08%20%26%2009-fulano-acesso-fulano-escrita.png)
 
 ---
 
@@ -200,7 +200,7 @@ O usuário `novato`, que não pertence ao grupo `devs`, foi utilizado para valid
 
 Ao tentar acessar e listar o conteúdo de `/srv/projeto`, o sistema retornou **Permission denied**, comprovando que as permissões `770` do diretório estavam impedindo o acesso de usuários externos ao grupo.
 
-![Bloqueio do usuário novato no diretório do projeto](./Aula02/Evidências/10%20%26%2011-novato-bloqueado-novato-ls-bloqueado.png)
+![Bloqueio do usuário novato no diretório do projeto](./Evidências/10%20%26%2011-novato-bloqueado-novato-ls-bloqueado.png)
 
 ---
 
@@ -290,7 +290,7 @@ grep "financeiro" /etc/group
 
 que confirmou `cicrano` e `beltrano` como membros do grupo.
 
-![Criação do grupo financeiro, diretório, permissão 2770 e SetGID](./Aula02/Evidências/12%20%26%2013-grupo-financeiro-diretorio-financeiro.png)
+![Criação do grupo financeiro, diretório, permissão 2770 e SetGID](./Evidências/12%20%26%2013-grupo-financeiro-diretorio-financeiro.png)
 
 ---
 
@@ -320,7 +320,7 @@ cat /srv/financeiro/relatorio.txt
 
 A exibição das duas linhas confirmou que `cicrano` possuía acesso de leitura e escrita ao diretório financeiro.
 
-![Criação e alteração do relatório pelo usuário cicrano](./Aula02/Evidências/14-cicrano-financeiro.png)
+![Criação e alteração do relatório pelo usuário cicrano](./Evidências/14-cicrano-financeiro.png)
 
 ---
 
@@ -332,7 +332,7 @@ Durante o teste, foram realizadas tentativas de listar o diretório e criar um a
 
 Também foi possível observar que `fulano` continuava tendo acesso ao diretório `/srv/projeto`, demonstrando que as permissões estavam separando corretamente os dois ambientes de trabalho.
 
-![Bloqueio de fulano no setor financeiro e acesso preservado ao projeto](./Aula02/Evidências/15-fulano-financeiro-bloqueado.png)
+![Bloqueio de fulano no setor financeiro e acesso preservado ao projeto](./Evidências/15-fulano-financeiro-bloqueado.png)
 
 ---
 
@@ -344,7 +344,7 @@ As tentativas de acessar `/srv/financeiro`, acessar `/srv/projeto` e escrever no
 
 Esse teste confirmou que usuários sem associação aos grupos autorizados não possuem acesso aos recursos protegidos.
 
-![Bloqueio do usuário novato nos diretórios protegidos](./Aula02/Evidências/16-novato-financeiro-bloqueado.png)
+![Bloqueio do usuário novato nos diretórios protegidos](./Evidências/16-novato-financeiro-bloqueado.png)
 
 ---
 
