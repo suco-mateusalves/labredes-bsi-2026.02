@@ -4,7 +4,6 @@
 
 - **Nome completo:** Mateus Alves dos Santos
 - **Curso:** Sistemas de Informação
-- **Turma:** BAC.0062 - LABORATÓRIO DE SISTEMAS OPERACIONAIS DE REDES
 - **Data:** 12/08/2026
 - **Título da prática:** Aula Prática 01: Introdução à Virtualização e Instalação do Ubuntu Server 26.04
 
@@ -12,97 +11,81 @@
 
 ## 2. Objetivo
 
-A atividade teve como objetivo compreender os conceitos fundamentais de virtualização por meio da criação e configuração de uma máquina virtual utilizando o Oracle VM VirtualBox.
+A atividade teve como objetivo compreender os conceitos fundamentais de virtualização por meio da criação e configuração de uma máquina virtual no Oracle VM VirtualBox e da instalação do Ubuntu Server 26.04.
 
-A prática também teve como finalidade realizar a instalação do Ubuntu Server 26.04, incluindo a configuração do armazenamento utilizando LVM, definição da rede, criação de um perfil administrativo e instalação do OpenSSH Server.
+A prática contemplou a preparação do hardware virtual, configuração da rede, instalação do sistema operacional, criação de um layout de armazenamento personalizado com LVM, criação do usuário administrativo, instalação do OpenSSH Server e validação do ambiente após a instalação.
 
-Ao final do procedimento, foram realizados testes de validação para verificar a configuração de rede, o armazenamento e a atualização dos repositórios do sistema.
+Ao final, foram utilizados comandos para verificar a conectividade de rede, o armazenamento disponível e o funcionamento dos repositórios de pacotes.
 
 ---
 
 ## 3. Ambiente
 
-### 3.1. Virtualizador
+A prática foi executada utilizando o Oracle VM VirtualBox como plataforma de virtualização.
 
-O ambiente virtual foi criado utilizando o **Oracle VM VirtualBox**.
-
-### 3.2. Configuração da máquina virtual
-
-A máquina virtual foi criada com as seguintes configurações observadas durante a preparação:
+A máquina virtual foi configurada com os seguintes recursos:
 
 | Configuração | Valor |
 |---|---|
 | **Nome da VM** | `ubuntu_server` |
-| **Sistema operacional** | Ubuntu |
-| **Versão** | Ubuntu 64-bit |
-| **Memória RAM** | 2048 MB |
-| **Processador** | 1 CPU |
-| **Disco virtual** | 32 GB |
+| **Sistema operacional** | Ubuntu Server 26.04 |
+| **Arquitetura** | 64-bit |
+| **Processador** | 1 vCPU |
+| **Memória RAM inicialmente prevista** | 512 MB |
+| **Memória RAM utilizada após ajuste** | 2048 MB |
+| **Armazenamento** | 32 GB |
 | **Formato do disco** | VDI |
-| **Alocação do disco** | Dinamicamente alocado |
-| **Imagem ISO** | `ubuntu-26.04-live-server-amd64.iso` |
+| **Alocação** | Dinamicamente alocado |
+| **Rede** | NAT |
+| **Interface de rede** | `enp0s3` |
 
-### Evidência — Nome, sistema operacional e ISO
-
-![Configuração inicial da máquina virtual](./Evidências/01.01-configuracao-vm.png)
-
-### Evidência — Memória e processador
-
-![Configuração de memória e CPU](./Evidências/01.02-configuracao-vm.png)
-
-### Evidência — Disco virtual
-
-![Configuração do disco virtual](./Evidências/01.03-configuracao-vm.png)
-
-### Evidência — Máquina virtual criada
-
-![Máquina virtual no VirtualBox](./Evidências/02-maquina-virtual.png)
+A memória inicialmente prevista para a atividade era de 512 MB. Durante a execução, entretanto, foi necessário aumentar a memória da máquina virtual para 2048 MB devido a um erro de falta de memória durante a inicialização do instalador. O ocorrido é detalhado na seção **6. Problemas e Soluções**.
 
 ---
 
 ## 4. Procedimento
 
-### 4.1. Criação da máquina virtual
+### 4.1. Criação e configuração da máquina virtual
 
 Inicialmente, foi criada uma nova máquina virtual no Oracle VM VirtualBox com o nome `ubuntu_server`.
 
-Durante a criação foram definidos o sistema operacional Ubuntu 64-bit, a quantidade de memória e processadores e o disco virtual de 32 GB.
+Durante a criação foram definidos o sistema operacional Ubuntu 64-bit, a quantidade de processadores, a memória RAM e o disco virtual de 32 GB em formato VDI com alocação dinâmica.
 
 A imagem ISO do Ubuntu Server 26.04 foi selecionada como mídia de instalação.
 
-As três telas abaixo registram as principais configurações realizadas durante a criação da VM.
+![Nome, sistema operacional e imagem ISO da VM](./Evidências/01.01-configuracao-vm.png)
 
-![Nome, sistema operacional e ISO](./Evidências/01.01-configuracao-vm.png)
+![Configuração de memória e processador](./Evidências/01.02-configuracao-vm.png)
 
-![Memória e processador](./Evidências/01.02-configuracao-vm.png)
+![Configuração do disco virtual](./Evidências/01.03-configuracao-vm.png)
 
-![Disco virtual](./Evidências/01.03-configuracao-vm.png)
+Após a configuração, a máquina virtual ficou disponível no VirtualBox para inicialização.
+
+![Máquina virtual criada no VirtualBox](./Evidências/02-maquina-virtual.png)
 
 ---
 
-### 4.2. Inicialização da instalação
+### 4.2. Inicialização do instalador
 
-Após a criação da máquina virtual, a VM foi inicializada utilizando a imagem ISO do Ubuntu Server.
+A máquina virtual foi inicializada utilizando a imagem ISO do Ubuntu Server.
 
-A primeira tela apresentada foi o menu de inicialização do instalador, com a opção **Try or Install Ubuntu Server**.
+Na tela de boot foi selecionada a opção de inicialização do instalador do Ubuntu Server.
 
-![Inicialização do Ubuntu Server](./Evidências/03.01-instalacao-ubuntu.png)
+![Inicialização do instalador do Ubuntu Server](./Evidências/03.01-instalacao-ubuntu.png)
 
 ---
 
 ### 4.3. Seleção do idioma
 
-No instalador, foi selecionado o idioma **English** para a interface do processo de instalação.
+O idioma **English** foi utilizado durante o processo de instalação.
 
-![Seleção do idioma](./Evidências/03.02-instalacao-ubuntu.png)
+![Seleção do idioma do instalador](./Evidências/03.02-instalacao-ubuntu.png)
 
 ---
 
 ### 4.4. Configuração do teclado
 
-Em seguida, foi realizada a configuração do teclado.
-
-Foi utilizado o layout **Portuguese (Brazil)**, conforme registrado na tela do instalador.
+O layout do teclado foi configurado como **Portuguese (Brazil)**.
 
 ![Configuração do teclado](./Evidências/03.03-instalacao-ubuntu.png)
 
@@ -110,239 +93,166 @@ Foi utilizado o layout **Portuguese (Brazil)**, conforme registrado na tela do i
 
 ### 4.5. Seleção do tipo de instalação
 
-Na etapa de escolha do tipo de instalação, foi selecionada a opção **Ubuntu Server**.
+Foi selecionada a opção padrão **Ubuntu Server**, mantendo a instalação completa do ambiente de servidor.
 
-Também foi apresentada a possibilidade de utilização da versão minimizada e da instalação de drivers de terceiros.
-
-![Tipo de instalação](./Evidências/03.04-instalacao-ubuntu.png)
+![Seleção do tipo de instalação](./Evidências/03.04-instalacao-ubuntu.png)
 
 ---
 
 ### 4.6. Configuração da rede
 
-O instalador identificou a interface de rede `enp0s3`.
+O instalador identificou a interface `enp0s3`, que recebeu configuração automaticamente por DHCP através da rede NAT fornecida pelo VirtualBox.
 
-A interface recebeu configuração automática por DHCP, permitindo que o servidor obtivesse conectividade de rede durante o processo de instalação.
-
-![Configuração da rede](./Evidências/03.05-instalacao-ubuntu.png)
+![Configuração da interface de rede](./Evidências/03.05-instalacao-ubuntu.png)
 
 ---
 
-### 4.7. Configuração do mirror de pacotes
+### 4.7. Configuração do repositório de pacotes
 
-Na etapa de configuração do Ubuntu Archive Mirror, foi utilizado o endereço padrão:
+Foi mantido o mirror de pacotes do Ubuntu apresentado pelo instalador. A comunicação com o repositório foi validada durante o próprio processo de instalação.
 
-```text
-http://br.archive.ubuntu.com/ubuntu
-```
-
-O instalador realizou os testes de acesso ao mirror e iniciou a leitura das listas de pacotes.
-
-![Configuração do mirror do Ubuntu](./Evidências/03.06-instalacao-ubuntu.png)
+![Configuração do mirror de pacotes](./Evidências/03.06-instalacao-ubuntu.png)
 
 ---
 
-## 5. Configuração do armazenamento
+### 4.8. Configuração personalizada do armazenamento
 
-### 5.1. Seleção do layout personalizado
+Para o armazenamento foi utilizado o modo **Custom storage layout**, permitindo configurar manualmente as partições e volumes.
 
-Para atender à proposta da atividade, foi utilizado o **Custom storage layout**, permitindo realizar manualmente a configuração das partições e volumes.
+![Seleção do layout personalizado de armazenamento](./Evidências/04.01-particionamento.png)
 
-![Seleção do layout personalizado](./Evidências/04.01-particionamento.png)
+O disco virtual de aproximadamente 32 GB foi selecionado para receber a estrutura de armazenamento.
 
----
+![Seleção do disco virtual](./Evidências/04.02-particionamento.png)
 
-### 5.2. Seleção do disco
-
-O disco virtual disponível foi identificado pelo instalador com aproximadamente **32 GB** de capacidade.
-
-Nesse momento ainda não havia partições ou volumes configurados.
-
-![Seleção do disco](./Evidências/04.02-particionamento.png)
-
----
-
-### 5.3. Criação da partição `/boot`
-
-Foi criada uma partição de **1024 MB (1 GB)**, formatada em `ext4` e configurada com o ponto de montagem:
+Foi criada uma partição de aproximadamente 1 GB, formatada em `ext4` e montada em:
 
 ```text
 /boot
 ```
 
-![Criação da partição boot](./Evidências/04.03-particionamento.png)
+![Criação da partição /boot](./Evidências/04.03-particionamento.png)
 
----
-
-### 5.4. Estrutura final do armazenamento
-
-Após a configuração do armazenamento, o instalador apresentou a estrutura final com:
-
-| Ponto de montagem | Tamanho aproximado | Tipo |
-|---|---:|---|
-| `/` | 29 GB | ext4 |
-| `/boot` | 1 GB | ext4 |
-| `SWAP` | 2 GB | swap |
-
-Também foi criado o grupo de volumes LVM:
+No espaço restante foi configurado o LVM, utilizando o grupo de volumes:
 
 ```text
 ubuntu-vg
 ```
 
-com os volumes lógicos:
+Foram criados os volumes lógicos:
 
-```text
-ubuntu-lv
-swap-lv
-```
+- `ubuntu-lv`, com aproximadamente 29 GB, formatado em `ext4` e montado em `/`;
+- `swap-lv`, com aproximadamente 2 GB, destinado à área de swap.
 
-O volume `ubuntu-lv` foi destinado ao sistema de arquivos raiz `/`, enquanto `swap-lv` foi destinado à área de swap.
+A estrutura final ficou organizada da seguinte forma:
+
+| Recurso | Tamanho aproximado | Utilização |
+|---|---:|---|
+| `/boot` | 1 GB | arquivos de inicialização |
+| `ubuntu-lv` | 29 GB | sistema de arquivos raiz `/` |
+| `swap-lv` | 2 GB | área de swap |
 
 ![Estrutura final do armazenamento](./Evidências/04.04-particionamento.png)
 
 ---
 
-## 6. Configuração do usuário administrador
+### 4.9. Configuração do usuário administrativo
 
-Durante a etapa **Profile configuration**, foi criado o perfil administrativo utilizado para acessar o sistema.
+Durante a configuração do perfil foi criado o usuário administrativo do servidor:
 
-Foram definidos:
+- **Nome:** `Administrador`;
+- **Nome do servidor:** `ubuntu_server`;
+- **Usuário:** `administrador`.
 
-- **Nome:** `Administrador`
-- **Nome do servidor:** `ubuntu_server`
-- **Nome de usuário:** `administrador`
-
-A senha foi definida durante a instalação e não é reproduzida neste relatório por questões de segurança.
+A senha definida durante a instalação não é reproduzida neste relatório.
 
 ![Configuração do usuário administrador](./Evidências/05-usuario-administrador.png)
 
 ---
 
-## 7. Configuração do OpenSSH Server
+### 4.10. Instalação do OpenSSH Server
 
-Na etapa de configuração do SSH, foi selecionada a opção de instalação do **OpenSSH Server**.
-
-A instalação desse serviço prepara o Ubuntu Server para permitir acesso remoto seguro por meio do protocolo SSH.
-
-Também foi mantida habilitada a autenticação por senha apresentada pelo instalador.
+Foi selecionada a instalação do **OpenSSH Server**, preparando o sistema para permitir acesso remoto seguro por SSH.
 
 ![Configuração do OpenSSH Server](./Evidências/06-openssh.png)
 
 ---
 
-## 8. Primeiro acesso e validação do sistema
+## 5. Testes e Validação
 
-Após a conclusão da instalação, o sistema foi iniciado e foram realizados testes para verificar o funcionamento do ambiente.
+Após a conclusão da instalação e reinicialização do sistema, foram realizados testes para verificar o funcionamento do ambiente.
 
----
+### 5.1. Atualização dos repositórios
 
-### 8.1. Atualização dos repositórios
-
-Foi executado o comando:
+Foi executado:
 
 ```bash
 sudo apt-get update
 ```
 
-O comando atualiza as informações sobre os pacotes disponíveis nos repositórios configurados.
-
-A saída apresentada demonstra que o sistema conseguiu consultar os repositórios e atualizar as informações de pacotes.
+O comando atualizou as informações sobre os pacotes disponíveis nos repositórios e confirmou que a máquina virtual possuía conectividade suficiente para acessar os servidores configurados.
 
 ![Execução do sudo apt-get update](./Evidências/07-apt-update.png)
 
 ---
 
-### 8.2. Verificação das interfaces e endereços IP
+### 5.2. Verificação da configuração de rede
 
-Para verificar a configuração de rede, foi utilizado:
+Foi utilizado o comando:
 
 ```bash
 ip addr
 ```
 
-O comando permitiu visualizar as interfaces de rede disponíveis e os endereços IP associados à máquina virtual.
-
-Entre as informações apresentadas está a interface `enp0s3`, utilizada durante a instalação.
+A saída permitiu verificar as interfaces de rede disponíveis e os endereços IP associados à máquina virtual, incluindo a interface `enp0s3`.
 
 ![Resultado do comando ip addr](./Evidências/08-ip-addr.png)
 
 ---
 
-### 8.3. Verificação do armazenamento
+### 5.3. Verificação do armazenamento
 
-Para verificar os sistemas de arquivos e o espaço disponível, foi utilizado:
+Para conferir os sistemas de arquivos montados e o espaço disponível, foi executado:
 
 ```bash
 df -h
 ```
 
-O resultado permitiu visualizar os sistemas de arquivos montados e suas respectivas capacidades e utilização.
+O resultado permitiu validar o armazenamento configurado durante a instalação.
 
 ![Resultado do comando df -h](./Evidências/09-df-h.png)
 
 ---
 
-## 9. Evidências da atividade
+## 6. Problemas e Soluções
 
-As evidências desta prática estão organizadas na pasta:
+### 6.1. Memória insuficiente durante a inicialização do instalador
 
-```text
-Aula01/Evidências/
-```
+**Problema:**  
+A máquina virtual foi inicialmente configurada com **512 MB de memória RAM**, conforme a especificação original da atividade. Entretanto, durante a inicialização do instalador do Ubuntu Server, ocorreu um erro relacionado à falta de memória, impedindo a continuidade normal da instalação.
 
-Os arquivos foram nomeados de acordo com a etapa correspondente, facilitando a identificação e a consulta de cada procedimento.
+**Causa:**  
+A quantidade de memória atribuída à máquina virtual não foi suficiente para que o instalador fosse carregado e executado corretamente naquele ambiente.
 
----
+**Solução:**  
+A máquina virtual foi desligada e a memória base foi aumentada de **512 MB para 2048 MB (2 GB)** nas configurações do VirtualBox. Após a alteração, o instalador conseguiu iniciar normalmente e a atividade pôde prosseguir.
 
-## 10. Problemas e soluções
+A configuração final de memória utilizada pode ser observada na evidência abaixo:
 
-### 10.1. Observação sobre a configuração de memória
+![Configuração da VM com 2048 MB de memória](./Evidências/01.02-configuracao-vm.png)
 
-A máquina virtual utilizada na atividade foi configurada com **2048 MB de memória RAM**, conforme apresentado na evidência de configuração da VM.
-
-![Configuração de memória da VM](./Evidências/01.02-configuracao-vm.png)
-
-> Caso tenha ocorrido algum problema específico durante a instalação, ele pode ser descrito nesta seção juntamente com a causa e a solução utilizada.
+Essa ocorrência demonstrou que, além de seguir uma especificação inicial, é necessário avaliar os recursos efetivamente exigidos pelo sistema operacional durante a execução.
 
 ---
 
-## 11. Resultados
+## 7. Conclusão
 
-Ao final da atividade, foi obtido um ambiente virtual funcional executando o Ubuntu Server 26.04.
+A atividade permitiu compreender, na prática, o processo de criação de uma máquina virtual e de instalação de um sistema operacional voltado para servidores.
 
-Foram realizadas as seguintes etapas:
+Foram configurados os principais recursos de hardware virtual, a rede, o usuário administrativo, o OpenSSH Server e um esquema de armazenamento personalizado utilizando LVM. A criação da partição `/boot`, do volume lógico raiz e da área de swap permitiu observar uma forma mais flexível de organização do armazenamento em sistemas Linux.
 
-- criação da máquina virtual no VirtualBox;
-- configuração de memória, CPU e armazenamento;
-- utilização da imagem ISO do Ubuntu Server 26.04;
-- inicialização do instalador;
-- configuração do idioma e teclado;
-- configuração da rede;
-- configuração do mirror de pacotes;
-- criação do layout personalizado de armazenamento;
-- criação da partição `/boot`;
-- criação do grupo de volumes LVM `ubuntu-vg`;
-- criação dos volumes `ubuntu-lv` e `swap-lv`;
-- configuração do sistema de arquivos raiz;
-- configuração da área de SWAP;
-- criação do usuário administrativo;
-- instalação do OpenSSH Server;
-- atualização dos repositórios;
-- verificação da configuração de rede;
-- verificação do armazenamento.
+Os comandos `sudo apt-get update`, `ip addr` e `df -h` foram utilizados para validar o funcionamento dos repositórios, da rede e do armazenamento após a instalação.
 
----
+Também foi necessário diagnosticar e corrigir um problema de insuficiência de memória. O aumento de 512 MB para 2048 MB permitiu concluir a instalação e evidenciou a importância de dimensionar adequadamente os recursos atribuídos a uma máquina virtual.
 
-## 12. Conclusão
-
-A prática permitiu compreender, de forma prática, o processo de criação e configuração de uma máquina virtual e a instalação de um sistema operacional destinado à função de servidor.
-
-A utilização do Oracle VM VirtualBox possibilitou trabalhar com conceitos de virtualização e recursos de hardware virtual, enquanto a instalação do Ubuntu Server permitiu praticar configurações importantes de um ambiente Linux.
-
-A configuração personalizada do armazenamento proporcionou contato com o gerenciamento de partições e volumes utilizando LVM, incluindo a criação do volume raiz e da área de SWAP.
-
-Também foram praticadas configurações relacionadas à rede, criação do usuário administrativo e instalação do OpenSSH Server. Por fim, os comandos `sudo apt-get update`, `ip addr` e `df -h` foram utilizados para validar o funcionamento do sistema instalado.
-
-Dessa forma, o ambiente foi preparado para as próximas atividades práticas da disciplina de Laboratório de Sistemas Operacionais e Redes.
-
+Ao final da prática, o Ubuntu Server encontrava-se instalado e funcional, deixando o ambiente preparado para as atividades seguintes da disciplina.
