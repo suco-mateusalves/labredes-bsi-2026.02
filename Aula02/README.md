@@ -11,26 +11,28 @@
 
 ## 2. Objetivo
 
-A atividade teve como objetivo praticar a administração de usuários e grupos no Ubuntu Server, bem como compreender o funcionamento das permissões POSIX aplicadas a arquivos e diretórios.
+A atividade teve como objetivo praticar a administração de usuários, grupos, arquivos e diretórios no Ubuntu Server, compreendendo como as permissões POSIX controlam o acesso aos recursos do sistema.
 
-A prática envolveu a criação de contas de usuários, criação e composição de grupos, definição de proprietário e grupo de arquivos e diretórios, aplicação de permissões por meio do `chmod` e realização de testes com usuários autorizados e não autorizados.
+A prática envolveu a criação de contas de usuários, criação e composição de grupos, definição de proprietário e grupo associado, utilização dos comandos `chown`, `chgrp` e `chmod` e realização de testes com usuários autorizados e não autorizados.
 
-Além das configurações básicas propostas, foi utilizado o bit especial **SetGID** no diretório do setor financeiro. Essa configuração garante que novos arquivos e subdiretórios criados dentro dele herdem o grupo `financeiro`, facilitando a colaboração entre os integrantes do setor e mantendo a consistência das permissões.
+No exercício de fixação, a configuração foi ampliada com o uso do bit especial **SetGID** no diretório do setor financeiro. Esse recurso foi utilizado para garantir que novos arquivos e subdiretórios criados nesse diretório herdem o grupo `financeiro`.
 
 ---
 
 ## 3. Ambiente
 
-A atividade foi realizada na máquina virtual configurada na Aula 01, utilizando:
+A atividade foi realizada na máquina virtual preparada na Aula 01.
+
+Foram utilizados:
 
 - **Sistema operacional:** Ubuntu Server;
 - **Virtualizador:** Oracle VM VirtualBox;
 - **Usuário administrativo:** `administrador`;
-- **Diretórios de trabalho:** `/srv/projeto` e `/srv/financeiro`;
-- **Usuários utilizados:** `fulano`, `cicrano`, `beltrano` e `novato`;
-- **Grupos utilizados:** `devs` e `financeiro`.
+- **Usuários de teste:** `fulano`, `cicrano`, `beltrano` e `novato`;
+- **Grupos:** `devs` e `financeiro`;
+- **Diretórios compartilhados:** `/srv/projeto` e `/srv/financeiro`.
 
-Os comandos administrativos foram executados com `sudo`, enquanto os testes de acesso foram realizados diretamente nas contas dos usuários envolvidos.
+Os comandos administrativos foram executados com `sudo`, enquanto os testes de acesso foram realizados por meio de sessões dos próprios usuários.
 
 ---
 
@@ -38,7 +40,7 @@ Os comandos administrativos foram executados com `sudo`, enquanto os testes de a
 
 ### 4.1. Criação dos usuários
 
-Inicialmente foram criadas as contas que seriam utilizadas durante os testes de permissões:
+Inicialmente foram criados os usuários utilizados durante os testes:
 
 ```bash
 sudo adduser fulano
@@ -47,7 +49,7 @@ sudo adduser beltrano
 sudo adduser novato
 ```
 
-Após a criação, as contas foram verificadas no sistema para confirmar que estavam disponíveis para as etapas seguintes.
+Após a criação, as contas foram verificadas no sistema.
 
 ![Criação e verificação dos usuários](./Evidências/01-criacao-usuarios.png)
 
@@ -55,13 +57,13 @@ Após a criação, as contas foram verificadas no sistema para confirmar que est
 
 ### 4.2. Criação e configuração do grupo `devs`
 
-Foi criado o grupo `devs` para representar uma equipe com acesso compartilhado ao diretório do projeto:
+Foi criado o grupo:
 
 ```bash
 sudo groupadd devs
 ```
 
-Em seguida, `fulano`, `cicrano` e `beltrano` foram adicionados como grupos suplementares:
+Em seguida, `fulano`, `cicrano` e `beltrano` foram adicionados ao grupo como membros suplementares:
 
 ```bash
 sudo usermod -aG devs fulano
@@ -69,335 +71,272 @@ sudo usermod -aG devs cicrano
 sudo usermod -aG devs beltrano
 ```
 
-A associação foi validada consultando o arquivo `/etc/group`:
+A composição do grupo foi verificada com:
 
 ```bash
 grep "devs" /etc/group
 ```
 
-A saída confirmou os três usuários como membros do grupo `devs`. O usuário `novato` foi mantido fora do grupo para ser utilizado posteriormente nos testes de bloqueio.
+O usuário `novato` foi propositalmente mantido fora do grupo para ser utilizado nos testes de restrição de acesso.
 
 ![Criação do grupo devs e associação dos usuários](./Evidências/02%20%26%2003%20-criacao-grupo-devs.png)
 
 ---
 
-### 4.3. Criação do diretório compartilhado `/srv/projeto`
+### 4.3. Criação e configuração do diretório `/srv/projeto`
 
-Foi criado o diretório destinado ao compartilhamento de arquivos entre os integrantes do grupo `devs`:
+Foi criado o diretório compartilhado:
 
 ```bash
 sudo mkdir -p /srv/projeto
 ```
 
-A configuração inicial foi consultada com:
-
-```bash
-ls -ld /srv/projeto
-```
-
-Em seguida, o usuário `administrador` foi definido como proprietário e o grupo `devs` como grupo associado:
+O usuário `administrador` foi definido como proprietário e o grupo `devs` como grupo associado:
 
 ```bash
 sudo chown administrador /srv/projeto
 sudo chgrp devs /srv/projeto
 ```
 
-As permissões do diretório foram configuradas como `770`:
+Em seguida foram aplicadas as permissões:
 
 ```bash
 sudo chmod 770 /srv/projeto
 ```
 
-Essa configuração corresponde a:
+A permissão `770` concede:
 
-| Categoria | Permissão | Efeito |
-|---|---|---|
-| Proprietário | `rwx` | leitura, escrita e acesso |
-| Grupo `devs` | `rwx` | leitura, escrita e acesso |
-| Outros | `---` | nenhum acesso |
+| Categoria | Permissões |
+|---|---|
+| Proprietário | `rwx` |
+| Grupo | `rwx` |
+| Outros | `---` |
 
-A saída de `ls -ld /srv/projeto` confirmou a permissão `drwxrwx---` e a associação ao usuário `administrador` e ao grupo `devs`.
+A configuração final foi conferida com:
+
+```bash
+ls -ld /srv/projeto
+```
 
 ---
 
 ### 4.4. Criação e configuração do arquivo `config_redes.txt`
 
-Dentro do diretório compartilhado foi criado o arquivo `config_redes.txt` com um conteúdo inicial:
+Dentro de `/srv/projeto` foi criado o arquivo:
 
 ```bash
 echo "Especificacao tecnica do roteador de borda" > /srv/projeto/config_redes.txt
 ```
 
-Posteriormente, o grupo do arquivo foi alterado para `devs`:
+O arquivo foi associado ao grupo `devs`:
 
 ```bash
 sudo chgrp devs /srv/projeto/config_redes.txt
 ```
 
-e suas permissões foram definidas como `660`:
+e recebeu a permissão:
 
 ```bash
 sudo chmod 660 /srv/projeto/config_redes.txt
 ```
 
-A permissão `660` concede leitura e escrita ao proprietário e ao grupo, sem conceder qualquer permissão aos demais usuários.
+A permissão `660` concede leitura e escrita ao proprietário e ao grupo, mantendo os demais usuários sem acesso.
 
-A configuração final foi verificada com:
+A configuração foi validada com:
 
 ```bash
 ls -l /srv/projeto/config_redes.txt
 ```
 
-O resultado `-rw-rw----` confirmou que o arquivo estava configurado conforme o objetivo da atividade.
-
-![Criação do diretório, configuração de proprietário, grupo, permissões e arquivo compartilhado](./Evidências/04%20%26%2005%20%26%2006%20%26%2007%20-diretorio-projeto-proprietario-grupo-permissao-770-arquivo-config-redes.png)
+![Configuração de /srv/projeto e do arquivo config_redes.txt](./Evidências/04%20%26%2005%20%26%2006%20%26%2007%20-diretorio-projeto-proprietario-grupo-permissao-770-arquivo-config-redes.png)
 
 ---
 
-## 5. Testes e Validação do Diretório `/srv/projeto`
+### 4.5. Exercício de fixação: setor financeiro
 
-### 5.1. Teste com o usuário autorizado `fulano`
-
-Para validar as permissões do grupo `devs`, foi iniciada uma sessão com o usuário `fulano`:
-
-```bash
-su - fulano
-```
-
-O usuário conseguiu acessar normalmente o diretório:
-
-```bash
-cd /srv/projeto
-```
-
-e listar o arquivo existente:
-
-```bash
-ls -l
-```
-
-Também foi realizado um teste de escrita:
-
-```bash
-echo "Revisado por Fulano" >> config_redes.txt
-```
-
-Por fim, o conteúdo foi consultado:
-
-```bash
-cat config_redes.txt
-```
-
-A presença das duas linhas no arquivo confirmou que `fulano`, como membro do grupo `devs`, possuía tanto permissão de leitura quanto de escrita.
-
-![Acesso e escrita realizados pelo usuário fulano](./Evidências/08%20%26%2009-fulano-acesso-fulano-escrita.png)
-
----
-
-### 5.2. Teste com o usuário não autorizado `novato`
-
-O usuário `novato`, que não pertence ao grupo `devs`, foi utilizado para validar a restrição de acesso.
-
-Ao tentar acessar e listar o conteúdo de `/srv/projeto`, o sistema retornou **Permission denied**, comprovando que as permissões `770` do diretório estavam impedindo o acesso de usuários externos ao grupo.
-
-![Bloqueio do usuário novato no diretório do projeto](./Evidências/10%20%26%2011-novato-bloqueado-novato-ls-bloqueado.png)
-
----
-
-## 6. Exercício Prático — Diretório do Setor Financeiro
-
-### 6.1. Criação do grupo e associação dos usuários
-
-Para o exercício de fixação foi criado o grupo:
+Foi criado o grupo:
 
 ```bash
 sudo groupadd financeiro
 ```
 
-Os usuários `cicrano` e `beltrano` foram adicionados ao grupo:
+Os usuários `cicrano` e `beltrano` foram adicionados a esse grupo:
 
 ```bash
 sudo usermod -aG financeiro cicrano
 sudo usermod -aG financeiro beltrano
 ```
 
-Dessa forma, apenas os integrantes definidos para o setor financeiro deveriam possuir acesso ao diretório correspondente.
-
----
-
-### 6.2. Criação e propriedade do diretório
-
-Foi criado o diretório:
+Em seguida foi criado o diretório:
 
 ```bash
 sudo mkdir -p /srv/financeiro
 ```
 
-O usuário `administrador` foi definido como proprietário:
+O proprietário e o grupo foram configurados com:
 
 ```bash
 sudo chown administrador /srv/financeiro
-```
-
-e o grupo associado foi alterado para `financeiro`:
-
-```bash
 sudo chgrp financeiro /srv/financeiro
 ```
 
----
-
-### 6.3. Aplicação da permissão `2770` e do SetGID
-
-No diretório `/srv/financeiro` foi utilizada a permissão:
+Para o diretório do setor financeiro foi utilizada a permissão:
 
 ```bash
 sudo chmod 2770 /srv/financeiro
 ```
 
-O primeiro algarismo, `2`, não representa uma permissão comum de leitura, escrita ou execução. Ele ativa o bit especial **SetGID** no diretório.
+Nesse modo numérico:
 
-Assim, `2770` combina:
+- o primeiro `2` ativa o bit especial **SetGID**;
+- o primeiro `7` concede `rwx` ao proprietário;
+- o segundo `7` concede `rwx` ao grupo;
+- o `0` remove todas as permissões dos demais usuários.
 
-- `2` — ativa o **SetGID**;
-- `7` — proprietário com `rwx`;
-- `7` — grupo com `rwx`;
-- `0` — outros sem qualquer permissão.
-
-O mesmo bit especial também pode ser aplicado de forma simbólica com:
+A mesma ativação do SetGID também pode ser expressa simbolicamente com:
 
 ```bash
 sudo chmod g+s /srv/financeiro
 ```
 
-Portanto, `chmod 2770` já ativa o SetGID; o uso de `chmod g+s` representa explicitamente a mesma característica e pode ser utilizado para reforçar ou aplicar apenas esse bit sem alterar as demais permissões.
+Como `chmod 2770` já havia ativado o SetGID, executar `chmod g+s` posteriormente não modifica o resultado nesse aspecto; o segundo comando demonstra a forma simbólica equivalente de configurar esse bit.
 
-Em um diretório com SetGID, novos arquivos e subdiretórios criados por integrantes do grupo passam a **herdar o grupo do diretório pai**, em vez de depender apenas do grupo primário do usuário que os criou. Para um diretório compartilhado entre membros de um setor, esse comportamento evita inconsistências de grupo e facilita o trabalho colaborativo.
+A presença do SetGID em um diretório faz com que novos arquivos e subdiretórios criados dentro dele herdem o **grupo do diretório pai**, nesse caso `financeiro`.
 
-A configuração foi conferida com:
+Isso facilita o compartilhamento entre os integrantes do setor. Entretanto, o SetGID por si só não determina todas as permissões de leitura e escrita dos novos arquivos, que também dependem das permissões solicitadas pelo programa e da `umask` do usuário.
+
+A configuração foi verificada com:
 
 ```bash
 ls -ld /srv/financeiro
-```
-
-A presença de `s` na posição de execução do grupo, como em `drwxrws---`, indica que o SetGID está ativo.
-
-Também foi utilizada a consulta:
-
-```bash
 grep "financeiro" /etc/group
 ```
 
-que confirmou `cicrano` e `beltrano` como membros do grupo.
+Quando o SetGID está ativo, a posição de execução do grupo no resultado de `ls -ld` é representada por `s`, como em:
 
-![Criação do grupo financeiro, diretório, permissão 2770 e SetGID](./Evidências/12%20%26%2013-grupo-financeiro-diretorio-financeiro.png)
+```text
+drwxrws---
+```
+
+![Configuração do grupo e diretório financeiro com SetGID](./Evidências/12%20%26%2013-grupo-financeiro-diretorio-financeiro.png)
 
 ---
 
-## 7. Testes e Validação do Diretório `/srv/financeiro`
+## 5. Testes e Validação
 
-### 7.1. Teste de leitura e escrita com `cicrano`
+### 5.1. Acesso autorizado de `fulano` ao projeto
 
-Foi iniciada uma sessão com o usuário `cicrano`, integrante do grupo `financeiro`.
+Foi iniciada uma sessão com:
 
-Dentro do diretório compartilhado, o usuário criou o arquivo `relatorio.txt`:
+```bash
+su - fulano
+```
+
+Como `fulano` pertence ao grupo `devs`, ele conseguiu acessar `/srv/projeto`, listar o arquivo existente e acrescentar conteúdo a `config_redes.txt`:
+
+```bash
+cd /srv/projeto
+ls -l
+echo "Revisado por Fulano" >> config_redes.txt
+cat config_redes.txt
+```
+
+O resultado confirmou que o grupo `devs` possuía leitura e escrita sobre o arquivo compartilhado.
+
+![Acesso e escrita de fulano no diretório do projeto](./Evidências/08%20%26%2009-fulano-acesso-fulano-escrita.png)
+
+---
+
+### 5.2. Bloqueio de `novato` no projeto
+
+Como `novato` não pertence ao grupo `devs`, foram realizadas tentativas de acessar e listar `/srv/projeto`.
+
+O sistema retornou **Permission denied**, confirmando que a permissão `770` impedia o acesso de usuários externos ao grupo.
+
+![Bloqueio de novato no diretório do projeto](./Evidências/10%20%26%2011-novato-bloqueado-novato-ls-bloqueado.png)
+
+---
+
+### 5.3. Acesso autorizado de `cicrano` ao setor financeiro
+
+O usuário `cicrano`, integrante do grupo `financeiro`, foi utilizado para testar leitura e escrita no diretório.
+
+Foi criado o arquivo:
 
 ```bash
 echo "Relatorio Financeiro Q3" > /srv/financeiro/relatorio.txt
 ```
 
-Em seguida, acrescentou uma nova linha:
+Posteriormente foi acrescentado conteúdo:
 
 ```bash
 echo "Atualizacao de dados" >> /srv/financeiro/relatorio.txt
 ```
 
-Por fim, o conteúdo foi consultado:
+e o resultado foi verificado com:
 
 ```bash
 cat /srv/financeiro/relatorio.txt
 ```
 
-A exibição das duas linhas confirmou que `cicrano` possuía acesso de leitura e escrita ao diretório financeiro.
+O teste confirmou que `cicrano` possuía acesso ao diretório financeiro e conseguia criar e modificar arquivos nele.
 
-![Criação e alteração do relatório pelo usuário cicrano](./Evidências/14-cicrano-financeiro.png)
-
----
-
-### 7.2. Teste de bloqueio com `fulano`
-
-O usuário `fulano` pertence ao grupo `devs`, mas não ao grupo `financeiro`.
-
-Durante o teste, foram realizadas tentativas de listar o diretório e criar um arquivo em `/srv/financeiro`. Ambas foram bloqueadas pelo sistema com a mensagem **Permission denied**.
-
-Também foi possível observar que `fulano` continuava tendo acesso ao diretório `/srv/projeto`, demonstrando que as permissões estavam separando corretamente os dois ambientes de trabalho.
-
-![Bloqueio de fulano no setor financeiro e acesso preservado ao projeto](./Evidências/15-fulano-financeiro-bloqueado.png)
+![Criação e alteração do relatório por cicrano](./Evidências/14-cicrano-financeiro.png)
 
 ---
 
-### 7.3. Teste de bloqueio com `novato`
+### 5.4. Bloqueio de `fulano` no setor financeiro
 
-O usuário `novato`, que não pertence aos grupos `devs` nem `financeiro`, também foi utilizado para testar as restrições.
+Embora `fulano` pertença ao grupo `devs`, ele não pertence ao grupo `financeiro`.
 
-As tentativas de acessar `/srv/financeiro`, acessar `/srv/projeto` e escrever no arquivo do setor financeiro foram negadas pelo sistema.
+As tentativas de acessar ou criar arquivos em `/srv/financeiro` retornaram **Permission denied**.
 
-Esse teste confirmou que usuários sem associação aos grupos autorizados não possuem acesso aos recursos protegidos.
+Ao mesmo tempo, o usuário continuou conseguindo acessar `/srv/projeto`, comprovando a separação das permissões entre os grupos.
 
-![Bloqueio do usuário novato nos diretórios protegidos](./Evidências/16-novato-financeiro-bloqueado.png)
-
----
-
-## 8. Resultados
-
-Ao final da atividade foram obtidos dois ambientes compartilhados com políticas distintas de acesso:
-
-| Recurso | Grupo autorizado | Permissão | Resultado |
-|---|---|---|---|
-| `/srv/projeto` | `devs` | `770` | membros de `devs` possuem acesso completo |
-| `config_redes.txt` | `devs` | `660` | membros de `devs` podem ler e escrever |
-| `/srv/financeiro` | `financeiro` | `2770` | membros possuem acesso completo e SetGID ativo |
-| `relatorio.txt` | herdado de `financeiro` | conforme criação | compartilhamento consistente pelo grupo |
-
-Os testes comprovaram que:
-
-- `fulano` conseguiu acessar e alterar arquivos de `/srv/projeto`;
-- `novato` foi bloqueado no diretório do projeto;
-- `cicrano` conseguiu criar e modificar arquivos em `/srv/financeiro`;
-- `fulano` foi bloqueado no diretório financeiro;
-- `novato` foi bloqueado nos ambientes protegidos;
-- o diretório financeiro foi configurado com **SetGID**, garantindo a herança do grupo em novos recursos criados dentro dele.
+![Bloqueio de fulano no setor financeiro](./Evidências/15-fulano-financeiro-bloqueado.png)
 
 ---
 
-## 9. Problemas, Ajustes e Soluções
+### 5.5. Bloqueio de `novato` nos diretórios protegidos
 
-Durante a atividade, uma atenção especial foi dada às permissões de diretórios compartilhados.
+O usuário `novato` não pertence aos grupos `devs` nem `financeiro`.
 
-Em `/srv/projeto`, a permissão `770` foi suficiente para permitir acesso completo ao proprietário e ao grupo `devs`, mantendo os demais usuários sem acesso.
+As tentativas de acesso aos diretórios protegidos foram negadas pelo sistema, comprovando que usuários sem associação aos grupos autorizados não conseguiam utilizar os recursos compartilhados.
 
-No exercício do setor financeiro, entretanto, foi adotada a permissão `2770` em vez de apenas `770`. A inclusão do bit SetGID torna a configuração mais adequada para um diretório colaborativo, pois novos arquivos e subdiretórios passam a manter o grupo `financeiro`.
+![Bloqueio de novato nos diretórios protegidos](./Evidências/16-novato-financeiro-bloqueado.png)
 
-A configuração também pode ser expressa simbolicamente com:
+---
+
+## 6. Problemas e Soluções
+
+Durante a atividade, não foram encontrados problemas que impedissem sua conclusão. Entretanto, foi necessário observar com atenção a diferença entre permissões comuns e bits especiais.
+
+No diretório `/srv/projeto`, a permissão `770` foi suficiente para conceder acesso completo ao proprietário e aos integrantes do grupo `devs`, mantendo os demais usuários sem acesso.
+
+No diretório `/srv/financeiro`, foi utilizada a permissão `2770`. O algarismo `2` ativa o SetGID e, portanto, acrescenta um comportamento que não existe em `770`: novos arquivos e subdiretórios passam a herdar o grupo `financeiro`.
+
+Também foi utilizado:
 
 ```bash
 sudo chmod g+s /srv/financeiro
 ```
 
-Esse comando não substitui a necessidade de definir as permissões comuns quando elas ainda não estiverem corretas; ele atua especificamente sobre o bit SetGID. No caso realizado, `chmod 2770` já reúne as permissões `770` e o SetGID em uma única operação.
+Esse comando representa a forma simbólica de ativar o SetGID. Como o bit já havia sido ativado por `chmod 2770`, sua execução posterior foi redundante quanto ao estado final, mas permitiu demonstrar as duas formas de configuração.
 
-Os testes com usuários pertencentes e não pertencentes aos grupos foram utilizados para confirmar que as alterações produziram o comportamento esperado.
+É importante destacar que o SetGID garante a **herança do grupo**, e não necessariamente permissão de escrita para o grupo em todos os novos arquivos. As permissões finais também podem ser influenciadas pela `umask` e pela forma como cada arquivo é criado.
+
+Os testes práticos com usuários pertencentes e não pertencentes aos grupos confirmaram que as configurações aplicadas apresentaram o comportamento esperado.
 
 ---
 
-## 10. Conclusão
+## 7. Conclusão
 
 A atividade permitiu compreender, na prática, como o Linux utiliza usuários, grupos, propriedade e permissões para controlar o acesso a arquivos e diretórios.
 
-A configuração de `/srv/projeto` demonstrou o uso das permissões tradicionais, com `770` no diretório e `660` no arquivo compartilhado, permitindo que os integrantes do grupo `devs` trabalhassem sobre os mesmos recursos enquanto usuários externos permaneciam bloqueados.
+No diretório `/srv/projeto`, a utilização das permissões `770` para o diretório e `660` para o arquivo `config_redes.txt` possibilitou o trabalho dos integrantes do grupo `devs`, enquanto usuários externos permaneceram bloqueados.
 
-O exercício do setor financeiro ampliou essa configuração por meio do uso do **SetGID**. A permissão `2770` manteve o acesso restrito ao proprietário e ao grupo `financeiro` e acrescentou a herança de grupo para novos arquivos e subdiretórios. O comando simbólico `chmod g+s` permitiu compreender também outra forma de representar esse bit especial.
+No exercício do setor financeiro, a permissão `2770` acrescentou o bit SetGID ao diretório. Isso fez com que os novos recursos criados dentro de `/srv/financeiro` herdassem o grupo `financeiro`, tornando a organização do compartilhamento mais adequada a um ambiente de trabalho coletivo.
 
-Os testes com `fulano`, `cicrano` e `novato` demonstraram que as políticas configuradas estavam funcionando conforme esperado: usuários autorizados conseguiram ler e escrever nos recursos de seus grupos, enquanto usuários sem autorização receberam `Permission denied`.
+Os testes com `fulano`, `cicrano` e `novato` demonstraram que as regras configuradas funcionaram conforme esperado: usuários autorizados conseguiram utilizar os recursos de seus grupos, enquanto usuários não autorizados receberam **Permission denied**.
 
-Dessa forma, a prática não se limitou à execução dos comandos, mas demonstrou como permissões e grupos podem ser utilizados para organizar ambientes colaborativos com isolamento e controle de acesso em um servidor Linux.
+Dessa forma, a prática consolidou conceitos fundamentais de administração Linux e mostrou como permissões tradicionais, grupos e bits especiais podem ser combinados para implementar controle de acesso em diretórios compartilhados.
