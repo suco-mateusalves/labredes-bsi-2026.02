@@ -3,8 +3,10 @@
 ## 1. Identificação
 
 - **Nome completo:** Mateus Alves dos Santos
+- **Matrícula:** 2023002055
 - **Curso:** Sistemas de Informação
-- **Data:** 30/08/2026
+- **Turma:** 2026.2
+- **Data:** 26/08/2026
 - **Título da prática:** Aula Prática 04: Manipulação, Edição, Permissões e Automação de Arquivos no Linux
 
 ---
