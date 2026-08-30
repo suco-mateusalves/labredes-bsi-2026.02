@@ -3,8 +3,10 @@
 ## 1. Identificação
 
 - **Nome completo:** Mateus Alves dos Santos
+- **Matrícula:** 2023002055
 - **Curso:** Sistemas de Informação
-- **Data:** 28/08/2026
+- **Turma:** 2026.2
+- **Data:** 12/08/2026
 - **Título da prática:** Aula Prática 02: Administração de Usuários, Grupos e Permissões no Linux
 
 ---
