@@ -8,12 +8,13 @@ As atividades foram realizadas em ambiente virtualizado utilizando **Oracle VM V
 
 ## Informações
 
-- **Aluno:** Mateus Alves dos Santos
+- **Nome completo:** Mateus Alves dos Santos
+- **Matrícula:** 2023002055
 - **Curso:** Sistemas de Informação
 - **Disciplina:** Laboratório de Sistemas Operacionais e Redes
 - **Período:** 2026.02
-- **Sistema operacional utilizado:** Ubuntu Server 26.04
-- **Virtualizador:** Oracle VM VirtualBox
+- **Sistema operacional utilizado:** Ubuntu Server 26.04 LTS
+- **Virtualizador:** Oracle VM VirtualBox Versão 7.2.16
 
 ---
 
