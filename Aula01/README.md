@@ -3,7 +3,9 @@
 ## 1. Identificação
 
 - **Nome completo:** Mateus Alves dos Santos
+- **Matrícula:** 2023002055
 - **Curso:** Sistemas de Informação
+- **Turma:** 2026.2
 - **Data:** 12/08/2026
 - **Título da prática:** Aula Prática 01: Introdução à Virtualização e Instalação do Ubuntu Server 26.04
 
